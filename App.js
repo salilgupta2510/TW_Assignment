@@ -1,21 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import FeedStack from './src/Navigation/FeedStack';
+import RestaurantStack from './src/Navigation/RestaurantStack';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Tab.Navigator >
+          <Tab.Screen 
+            name="Feeds" 
+            component={FeedStack} 
+            options={{ title: 'Feeds'}} 
+            listeners={({ navigation }) => ({
+            tabPress: () => {
+              navigation.navigate('Feed', {
+                screen: 'Feeds',
+              });
+            },
+          })} />
+          <Tab.Screen 
+            name="Restaurants" 
+            component={RestaurantStack} 
+            options={{ title: 'Restaurants'}} 
+            listeners={({ navigation }) => ({
+            tabPress: () => {
+              navigation.navigate('Restaurant', {
+                screen: 'Restaurants',
+              });
+            },
+          })} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
